@@ -11,12 +11,12 @@ class SentenceSplitter:
             self._split = split_sentences
         # TODO: 다른 언어의 문장 분리를 지원
 
+    def split(self, string: str) -> List[str]:
+        return self._split(string)
+
     def process(self, example: Dict[str, List[str]]) -> Dict[str, List[str]]:
         example["text"] = self.split(example["text"])
         return example
-
-    def split(self, string: str) -> List[str]:
-        return self._split(string)
 
 
 class MorphemeSplitter:

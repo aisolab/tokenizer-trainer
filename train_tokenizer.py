@@ -61,7 +61,7 @@ def main():
         total_size = len(preprocessed_corpus)
         sample_size = int(total_size * args.sampling_ratio)
 
-        preprocessed_corpus = source_corpus.select(
+        preprocessed_corpus = preprocessed_corpus.select(
             indices=choice(range(total_size), sample_size)
         )
 
@@ -85,7 +85,6 @@ def main():
     )
 
     token_generator = convert_to_token_generator(preprocessed_corpus)
-
     tokenizer = build_tokenizer(args)
 
     logger.info(f"training start!")
