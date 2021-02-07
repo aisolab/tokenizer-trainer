@@ -1,25 +1,59 @@
-import random
-from typing import Callable, Generator, List
+from typing import Dict, List
+
+from konlpy.tag import Mecab
+from kss import split_sentences
 
 
-def string_sampler(
-    string_generator: Generator[str, None, None], ratio: float = 0.1, seed: int = 42
-) -> Generator[str, None, None]:
+class SentenceSplitter:
+    def __init__(self, lang: str = "ko") -> None:
+        self._split = split_sentences
+        if lang == "ko":
+            self._split = split_sentences
+        # TODO: 다른 언어의 문장 분리를 지원
 
-    random.seed(seed)
+    def process(self, example: Dict[str, List[str]]) -> Dict[str, List[str]]:
+        example["text"] = self.split(example["text"])
+        return example
 
-    for string in string_generator:
-        if random.random() <= ratio:
-            yield string
-        else:
-            continue
+    def split(self, string: str) -> List[str]:
+        return self._split(string)
 
 
-def pretokenize_collator(
-    string_generator: Generator[str, None, None],
-    pretokenize_func: Callable[[str], List[str]],
-) -> Generator[str, None, None]:
+class MorphemeSplitter:
+    def __init__(self, lang: str = "ko") -> None:
+        self._split = Mecab().morphs
+        if lang == "ko":
+            self._split = Mecab().morphs
+        # TODO: 다른 언어에 대해서 형태소 분석을 지원
 
-    for string in string_generator:
-        for token in pretokenize_func(string):
-            yield token
+    def split(self, string: str) -> List[str]:
+        return self._split(string)
+
+    def process(self, example: Dict[str, List[str]]) -> Dict[str, List[str]]:
+        if isinstance(example["text"], list):
+            list_of_tokens = []
+            for sentence in example["text"]:
+                list_of_tokens.extend(self.split(sentence))
+            example["text"] = list_of_tokens
+            return example
+        example["text"] = self.split(example["text"])
+        return example
+
+
+class SpaceSplitter:
+    def __init__(self) -> None:
+        pass
+
+    def split(self, string: str) -> List[str]:
+        return string.split(" ")
+
+    def process(self, example: Dict[str, List[str]]) -> Dict[str, List[str]]:
+        if isinstance(example["text"], list):
+            list_of_tokens = []
+            for sentence in example["text"]:
+                list_of_tokens.extend(self.split(sentence))
+
+            example["text"] = list_of_tokens
+            return example
+        example["text"] = self.split(example["text"])
+        return example
