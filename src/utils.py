@@ -1,7 +1,7 @@
 import itertools
 import logging
-import re
 from pathlib import Path
+import re
 from typing import Generator, List, Union
 
 import datasets

@@ -1,5 +1,5 @@
-import logging
 from dataclasses import dataclass
+import logging
 
 import datasets
 import pyarrow as pa
@@ -42,17 +42,13 @@ class Text(datasets.ArrowBasedBuilder):
             if isinstance(files, str):
                 files = [files]
             return [
-                datasets.SplitGenerator(
-                    name=datasets.Split.TRAIN, gen_kwargs={"files": files}
-                )
+                datasets.SplitGenerator(name=datasets.Split.TRAIN, gen_kwargs={"files": files})
             ]
         splits = []
         for split_name, files in data_files.items():
             if isinstance(files, str):
                 files = [files]
-            splits.append(
-                datasets.SplitGenerator(name=split_name, gen_kwargs={"files": files})
-            )
+            splits.append(datasets.SplitGenerator(name=split_name, gen_kwargs={"files": files}))
         return splits
 
     def _generate_tables(self, files):
