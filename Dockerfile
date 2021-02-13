@@ -31,7 +31,7 @@ RUN pyenv install 3.7.9 && \
     pyenv global 3.7.9 && \
     pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir cython && \
-    pip install --no-cache-dir tokenizers kss==1.3.1 black isort konlpy datasets
+    pip install --no-cache-dir tokenizers kss==1.3.1 black isort konlpy datasets pylint pytest-flake8 pytest-mypy pytest-pylint
 
 SHELL ["/bin/bash", "-c"]
 RUN bash <(curl -s https://raw.githubusercontent.com/konlpy/konlpy/master/scripts/mecab.sh)
