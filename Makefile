@@ -5,7 +5,7 @@ format:
 lint:
 	find . -iname "*.py" | xargs pylint --rcfile=.pylintrc || exit 0
 
-lint_report:
+lint-report:
 	find . -iname "*.py" | xargs pytest --pylint --pylint-rcfile=.pylintrc --flake8 || exit 0
 
 typehint:
