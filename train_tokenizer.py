@@ -103,9 +103,7 @@ def main():
     tokenizer.save_model(str(save_dir))
 
     training_end_time = timer()
-    logger.info(
-        f"training done!\nelapsed time {training_end_time - training_start_time:.4}s"
-    )
+    logger.info(f"training done!\nelapsed time {training_end_time - training_start_time:.4}s")
 
 
 if __name__ == "__main__":
